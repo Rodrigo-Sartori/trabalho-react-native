@@ -20,6 +20,7 @@ const estilo = StyleSheet.create({
         borderRadius: 3,
         borderWidth: 1,
         width: "30%",
+        backgroundColor:branco,
         height:35
     },
     campoCadastroCliente: {
@@ -64,7 +65,7 @@ const estilo = StyleSheet.create({
         marginTop: "10%",
         width: "90%",
         height: "85%",
-        backgroundColor: azulClaro,
+        backgroundColor: azulClaro
     },
     modal: {
         marginTop:"50%",
@@ -83,13 +84,18 @@ const estilo = StyleSheet.create({
         marginLeft:"5%",
         width:"30%"
     },
-    
     botaoDireitaModal: {
         position:"absolute",
         right:0,
         bottom:0,
         marginBottom:"5%",
         marginRight:"5%",
+        width:"30%"
+    },
+    botaoCentroModal: {
+        position:"absolute",
+        alignSelf:"center",
+        justifyContent:"center",
         width:"30%"
     },
     fonteCartao: {

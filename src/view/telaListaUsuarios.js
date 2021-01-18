@@ -1,42 +1,41 @@
 import estilo from "../estilo"
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Fragment } from "react";
 import { Button, Modal, Text, View } from "react-native";
 import { FlatList, ScrollView, TouchableHighlight } from "react-native-gesture-handler";
-import { deletarCartao } from "../api/consumidor";
+import { deletarUsuario, recuperaTodosUsuarios } from "../api/consumidor";
 import BotaoNavegar from "../componentes/botaoNavegar";
 import BotaoVoltar from "../componentes/botaoVoltar";
 import Constant from "expo-constants"
 import { branco, cinzaClaro, vermelho, azulBemClaro, preto } from "../constantes/coresEstaticas"
 
-export default function listarCartoes(props) {
-    const cartoes = props.route.params.lista
-    const nomeCliente = props.route.params.nomeCliente
-    const [idCartao, setIdCartao] = useState('')
+export default function listarUsuarios(props) {
+    const [lista, setLista] = useState([])
+    const [idUsuario, setIdUsuario] = useState('')
     const [modalVisible, setModalVisible] = useState(false);
 
-    const navegarTelaCartao = (cartoes) => {
+
+    useEffect(() => {
+        recuperaTodosUsuarios().then((dados) => { setLista(dados) })
+    }, []);
+
+    const navegarTelaCartao = (cartoes, nome) => {
         if (cartoes == undefined || cartoes.length == 0) {
-            console.warn("fazer modal falando que nao tem cartao pra esse cliente")
-
+            setModalCartao(true)
         } else {
-
+            props.navigation.push("TelaListaCartoes", { lista: cartoes, nomeCliente: nome })
         }
     }
 
     const fazExclusao = () => {
-        deletarCartao(idCartao)
+        deletarUsuario(idUsuario)
         setModalVisible(false)
         props.navigation.push("TelaInicial")
     }
 
     const chamaModal = (id) => {
         setModalVisible(true)
-        setIdCartao(id)
-    }
-
-    const formataStatus = (status) => {
-        returnstatus
+        setIdUsuario(id)
     }
 
     return (
@@ -51,26 +50,25 @@ export default function listarCartoes(props) {
                         <Button title={"não"} onPress={() => setModalVisible(false)} color={vermelho} />
                     </View>
                 </View>
-
-
             </Modal>
+
+
             <FlatList
+                data={lista}
                 ListFooterComponent={
-                    <BotaoNavegar titulo={"pedir cartão"} navigate={props.navigation} nomeTela={"TelaCadastrarCliente"} cor={preto} estilo={estilo.botaoCadastro} />
+                    <BotaoNavegar titulo={"cadastrar usuário"} navigate={props.navigation} nomeTela={"TelaCadastroUsuario"} cor={preto} estilo={estilo.botaoCadastro} />
                 }
                 ListHeaderComponent={<View style={{ marginTop: Constant.statusBarHeight, height: 30 }}>
                     <BotaoVoltar navigate={props.navigation} />
-                    <Text style={{alignSelf:"center",marginTop:"3%"}}>cartões de: {nomeCliente}</Text>
                 </View>}
-                data={cartoes}
                 renderItem={({ item }) =>
                     <Fragment>
                         <View style={estilo.linha}>
                             <View style={estilo.containerCliente}>
-                                <Text style={estilo.fonteListagem}>Número: {item.numero}</Text>
-                                <Text style={estilo.fonteListagem}>Data Validade: {item.dataValidade.substring(0, 10)}</Text>
-                                <Text style={estilo.fonteListagem}>Status: {item.bloqueado == true ? "Bloqueado" : "Ativo"}</Text>
-
+                                <Text style={estilo.fonteListagem}>ID: {item.id}</Text>
+                                <Text style={estilo.fonteListagem}>Nome: {item.nome}</Text>
+                                <Text style={estilo.fonteListagem}>Cpf: {item.cpf}</Text>
+                                <Text style={estilo.fonteListagem}>Regra: {item.regras == undefined || item.regras.length == 0 ? "Usuário sem regra" : item.regras[0].nome}</Text>
                             </View>
                             <View style={estilo.botaoDetalhe} >
                                 <Button title={"excluir"} onPress={() => chamaModal(item.id)} color={cinzaClaro} />

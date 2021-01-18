@@ -7,6 +7,10 @@ import TelaCadastrarCliente from "./view/telaCadastroCliente";
 import TelaDetalheCliente from "./view/telaDetalheCliente";
 import TelaListaCartoes from "./view/telaListaCartoes";
 import TelaCadastroCartao from "./view/telaCadastroCartao";
+import TelaListaUsuarios from "./view/telaListaUsuarios";
+import TelaCadastroUsuario from "./view/telaCadastroUsuario";
+import TelaErro from "./view/telaErro";
+
 
 
 
@@ -24,6 +28,9 @@ export default function gerenciamentoStack() {
             <Stack.Screen name="TelaDetalheCliente" component={TelaDetalheCliente} />
             <Stack.Screen name="TelaListaCartoes" component={TelaListaCartoes} />
             <Stack.Screen name="TelaCadastroCartao" component={TelaCadastroCartao} />
+            <Stack.Screen name="TelaListaUsuarios" component={TelaListaUsuarios} />
+            <Stack.Screen name="TelaCadastroUsuario" component={TelaCadastroUsuario} />
+            <Stack.Screen name="TelaErro" component={TelaErro} />
         </Stack.Navigator>
     )
 

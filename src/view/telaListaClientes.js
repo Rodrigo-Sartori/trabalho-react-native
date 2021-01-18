@@ -14,13 +14,14 @@ export default function listarClientes(props) {
     const [idCliente, setIdCliente] = useState('')
     const [modalVisible, setModalVisible] = useState(false);
 
+
     useEffect(() => {
         getClientes().then((dados) => { setLista(dados) })
     }, []);
 
     const navegarTelaCartao = (cartoes, nome) => {
         if (cartoes == undefined || cartoes.length == 0) {
-            console.warn("fazer modal falando que nao tem cartao pra esse cliente")
+            props.navigation.push("TelaCadastroCartao")
 
         } else {
             props.navigation.push("TelaListaCartoes", { lista: cartoes, nomeCliente: nome })
@@ -29,7 +30,7 @@ export default function listarClientes(props) {
 
     const fazExclusao = () => {
         deletarCliente(idCliente)
-        setModalVisible(true)
+        setModalVisible(false)
         props.navigation.push("TelaInicial")
     }
 
@@ -51,9 +52,9 @@ export default function listarClientes(props) {
                         <Button title={"não"} onPress={() => setModalVisible(false)} color={vermelho} />
                     </View>
                 </View>
-
-
             </Modal>
+            
+
             <FlatList
                 data={lista}
                 ListFooterComponent={
